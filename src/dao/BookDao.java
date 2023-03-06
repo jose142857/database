@@ -38,7 +38,21 @@ public class BookDao implements DaoInterface<Book>{
 
 	@Override
 	public int update(Book t) {
-		// TODO Auto-generated method stub
+//		create connection
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "UPDATE book SET "+
+						"bookName ='"+t.getBookName()+"' "+
+						",publishYear ='"+t.getPublishYear()+"'"+
+						",author = '"+t.getAuthor()+"'";
+			System.out.println(sql);
+			int check = st.executeUpdate(sql);
+			System.out.println("there are "+check+" lines changed");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return 0;
 	}
 

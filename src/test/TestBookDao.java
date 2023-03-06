@@ -9,9 +9,12 @@ public class TestBookDao {
 		Book b1 = new Book("A", "peter", 2015);
 		Book b2 = new Book("B", "Crouch", 2018);
 //		BookDao.getInstance().add(b2);
+//		BookDao.getInstance().add(b1);
 		Book b3 = new Book ("number","Daisy",2022);
 		
-		BookDao.getInstance().delete(b2);
+//		BookDao.getInstance().delete(b2);
+		
+		BookDao.getInstance().update(b2);
 	}
 
 }

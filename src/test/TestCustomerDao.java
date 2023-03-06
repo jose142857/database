@@ -1,5 +1,7 @@
 package test;
 
+import java.util.ArrayList;
+
 import dao.BookDao;
 import dao.CustomerDao;
 import model.Customer;
@@ -11,7 +13,12 @@ public class TestCustomerDao {
 //		CustomerDao.getInstance().add(ctm1);
 		
 //		CustomerDao.getInstance().update(ctm2);
-		CustomerDao.getInstance().delete(ctm2);
+//		CustomerDao.getInstance().delete(ctm2);
+		
+		ArrayList<Customer> list = CustomerDao.getInstance().selectAll();
+		for(Customer cus : list ) {
+			System.out.println(cus.toString());
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -91,8 +92,35 @@ public class CustomerDao implements DaoInterface<Customer> {
 
 	@Override
 	public ArrayList<Customer> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Customer> result = new ArrayList<Customer>();
+		
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT * FROM customer";
+			System.out.println(sql);
+					
+		ResultSet rs =	st.executeQuery(sql);
+		
+		while(rs.next()) {
+			String name = rs.getString("name");
+			String adr = rs.getString("adress");
+			int age = rs.getInt("age");
+			
+			Customer cus = new Customer(name,adr,age);
+			result.add(cus);
+			
+		}
+		
+		JDBCUtil.closeConnection(con);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return result;
 	}
 
 	@Override
