@@ -5,8 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import database.JDBCUtil;
+import model.Book;
 import model.Customer;
 
 public class CustomerDao implements DaoInterface<Customer> {
@@ -48,7 +50,8 @@ public class CustomerDao implements DaoInterface<Customer> {
 						"SET "+
 						" name='"+ t.getName()+"' "+
 						",age='"+ t.getAge()+"' "+
-						"WHERE adress='"+t.getAdress()+"'";
+						",adress='"+t.getAdress()+"' "+
+						"WHERE id='"+t.getId()+"'";
 			System.out.println(sql);
 					
 		int check =	st.executeUpdate(sql);
@@ -106,8 +109,9 @@ public class CustomerDao implements DaoInterface<Customer> {
 			String name = rs.getString("name");
 			String adr = rs.getString("adress");
 			int age = rs.getInt("age");
+			int id = rs.getInt("id");
 			
-			Customer cus = new Customer(name,adr,age);
+			Customer cus = new Customer(name,adr,age,id);
 			result.add(cus);
 			
 		}
@@ -125,15 +129,94 @@ public class CustomerDao implements DaoInterface<Customer> {
 
 	@Override
 	public Customer selectById(Customer t) {
-		// TODO Auto-generated method stub
-		return null;
+		Customer result = null;
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT * FROM customer " + "WHERE id ='"+t.getId()+"' ";
+			System.out.println(sql);
+			ResultSet rs = st.executeQuery(sql);
+			while(rs.next()) {
+				String name = rs.getString("name");
+				int age = rs.getInt("age");
+				String adr = rs.getString("adress");
+				int id = rs.getInt("id");
+				
+				result = new Customer(name, adr, age, id);
+				
+				
+			}
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return result ;
+		
 	}
 
 	@Override
 	public ArrayList<Customer> selectByCondition(String condition) {
+ArrayList<Customer> result = new ArrayList<Customer>();
+		
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT * FROM customer WHERE "+ condition;
+			System.out.println(sql);
+					
+		ResultSet rs =	st.executeQuery(sql);
+		
+		while(rs.next()) {
+			String name = rs.getString("name");
+			String adr = rs.getString("adress");
+			int age = rs.getInt("age");
+			int id = rs.getInt("id");
+			
+			Customer cus = new Customer(name,adr,age,id);
+			result.add(cus);
+			
+		}
+		
+		JDBCUtil.closeConnection(con);
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
+
+	@Override
+	public int distinct(Customer t) {
+		try {
+			Connection con = JDBCUtil.getConnection();
+			Statement st = con.createStatement();
+			String sql = "SELECT DISTINCT '"+t.getAge()+"' from book";
+			System.out.println(sql);
+			JDBCUtil.closeConnection(con);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return 0;
+		
+	}
+
+	@Override
+	public ArrayList<Book> distinct() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 	
 	
 
