@@ -12,6 +12,6 @@ public interface DaoInterface<T> {
 	public ArrayList<T> selectAll();
 	public T selectById(T t);
 	public ArrayList<T> selectByCondition(String condition);
-	ArrayList<Book> distinct();
+	int distinct();
 
 }
